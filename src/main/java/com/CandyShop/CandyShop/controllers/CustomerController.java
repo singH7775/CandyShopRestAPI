@@ -30,14 +30,20 @@ public class CustomerController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@PostMapping("/register")
+	public ResponseEntity<HttpStatus> saveCustomer(@Valid @RequestBody Customer customer) {
+		customerService.saveCustomer(customer);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
 		return new ResponseEntity<>(customerService.getCustomer(id), HttpStatus.OK);
 	}
 	
-	@PostMapping
-	public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody Customer customer) {
-		return new ResponseEntity<>(customerService.saveCustomer(customer), HttpStatus.CREATED);
+	@GetMapping("/all")
+	public ResponseEntity<List<Customer>> getCustomers() {
+		return new ResponseEntity<>(customerService.getCustomers(), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -46,9 +52,10 @@ public class CustomerController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@GetMapping("/all")
-	public ResponseEntity<List<Customer>> getCustomers() {
-		return new ResponseEntity<>(customerService.getCustomers(), HttpStatus.OK);
+	@PostMapping("/{customerId}/order/{candyId}")
+	public ResponseEntity<HttpStatus> orderIcecream(@PathVariable Long customerId, @PathVariable Long candyId) {
+		customerService.orderACandy(customerId, candyId);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }
